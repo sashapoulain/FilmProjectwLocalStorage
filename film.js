@@ -18,6 +18,17 @@ function eventListeners() {
     form.addEventListener("submit", addFilm);
     document.addEventListener("DOMContentLoaded", showFilmsFromLocalStorage);
     clearAll.addEventListener("click", clearAllFilms);
+    tBody.addEventListener("click", deleteFilm);
+}
+
+function deleteFilm(e) {
+    if (e.target.id === "delete-film") {
+        tBody.removeChild(e.target.parentElement.parentElement);
+
+        showAlert("info", "Film başarıyla silindi...");
+    } else {
+        showAlert("warning", "Silme işlemi başarısız...");
+    }
 }
 
 function clearAllFilms(e) {
