@@ -16,6 +16,19 @@ eventListeners();
 
 function eventListeners() {
     form.addEventListener("submit", addFilm);
+    document.addEventListener("DOMContentLoaded", showFilmsFromLocalStorage);
+    clearAll.addEventListener("click", clearAllFilms);
+}
+
+function clearAllFilms(e) {
+    if (confirm("Hepsini silicem. Emin misin?")) {
+        while (tBody.firstElementChild != null) {
+            tBody.removeChild(tBody.firstElementChild);
+        }
+        localStorage.removeItem("films");
+    } else {
+        alert("Silme işlemi iptal edildi...");
+    }
 }
 
 function addFilm(e) {
@@ -30,7 +43,6 @@ function addFilm(e) {
     } else {
         addFilmToUI(getTitle, getDirector, getUrl);
         addFilmToLocalStorage(getTitle, getDirector, getUrl);
-        // showFilmsFromLocalStorage();
         showAlert("success", "Film başarıyla eklendi...");
         console.log("ui a ekleme");
     }
@@ -93,9 +105,9 @@ function addFilmToLocalStorage(getTitle, getDirector, getUrl) {
     localStorage.setItem("films", JSON.stringify(films));
 }
 
-// function showFilmsFromLocalStorage() {
-//     let films = getFilmToLocalStorage();
-//     films.forEach((film) => {
-//         addFilmToUI(film.title, film.director, film.url);
-//     });
-// }
+function showFilmsFromLocalStorage() {
+    let films = getFilmToLocalStorage();
+    films.forEach((film) => {
+        addFilmToUI(film.title, film.director, film.url);
+    });
+}
