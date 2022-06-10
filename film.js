@@ -21,27 +21,6 @@ function eventListeners() {
     tBody.addEventListener("click", deleteFilm);
 }
 
-function deleteFilm(e) {
-    if (e.target.id === "delete-film") {
-        tBody.removeChild(e.target.parentElement.parentElement);
-
-        showAlert("info", "Film başarıyla silindi...");
-    } else {
-        showAlert("warning", "Silme işlemi başarısız...");
-    }
-}
-
-function clearAllFilms(e) {
-    if (confirm("Hepsini silicem. Emin misin?")) {
-        while (tBody.firstElementChild != null) {
-            tBody.removeChild(tBody.firstElementChild);
-        }
-        localStorage.removeItem("films");
-    } else {
-        alert("Silme işlemi iptal edildi...");
-    }
-}
-
 function addFilm(e) {
     const getTitle = title.value.trim();
     title.value = "";
@@ -121,4 +100,35 @@ function showFilmsFromLocalStorage() {
     films.forEach((film) => {
         addFilmToUI(film.title, film.director, film.url);
     });
+}
+
+function clearAllFilms(e) {
+    if (confirm("Hepsini silicem. Emin misin?")) {
+        while (tBody.firstElementChild != null) {
+            tBody.removeChild(tBody.firstElementChild);
+        }
+        localStorage.removeItem("films");
+    } else {
+        alert("Silme işlemi iptal edildi...");
+    }
+}
+
+function deleteFilm(e) {
+    if (e.target.id === "delete-film") {
+        tBody.removeChild(e.target.parentElement.parentElement);
+        deleteFilmFromLocalStorage(e.target.parentElement.parentElement);
+        showAlert("info", "Film başarıyla silindi...");
+    } else {
+        showAlert("warning", "Silme işlemi başarısız...");
+    }
+}
+
+function deleteFilmFromLocalStorage(deletefilm) {
+    let films = getFilmToLocalStorage();
+    films.forEach((film, index) => {
+        if (film.title === deletefilm.children[1].textContent) {
+            films.splice(index, 1);
+        }
+    });
+    localStorage.setItem("films", JSON.stringify(films));
 }
